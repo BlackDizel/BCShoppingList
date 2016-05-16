@@ -36,7 +36,7 @@ public class ControllerList {
 
         if (getData(context) == null) data = new ArrayList<>();
         getData(context).add(item);
-        ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
+        saveCache(context);
     }
 
     public int getCount(@Nullable Context context, int state) {
@@ -104,7 +104,11 @@ public class ControllerList {
     public void removeItem(Context context, @Nullable ShoppingList item) {
         if (getData(context) == null || !getData(context).contains(item)) return;
         if (getData(context).remove(item))
-            ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
+            saveCache(context);
+    }
+
+    public void saveCache(Context context) {
+        ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
     }
 
     //todo: on add purchase date sort and reverse list
