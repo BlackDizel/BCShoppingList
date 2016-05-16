@@ -1,0 +1,26 @@
+/captures
+
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+/app/src/androidTest
+# Local configuration file (sdk path, etc)
+/app/src/test
+local.properties
+
+# Android Studio
+*.iml
+.gradle
+/.idea
+build/
