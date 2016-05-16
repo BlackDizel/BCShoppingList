@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerList;
+import org.byters.bcshoppinglist.model.ShoppingList;
 import org.byters.bcshoppinglist.ui.utils.Utils;
 
 
@@ -59,6 +60,8 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvPurchaseDate;
         private ImageView ivRemove;
+        @Nullable
+        private ShoppingList item;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -74,6 +77,7 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
 
         public void setData(int position) {
 
+            item = ControllerList.getInstance().getItem(itemView.getContext(), position);
             String title = ControllerList.getInstance().getTitle(itemView.getContext(), position);
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
 
@@ -91,7 +95,11 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
         @Override
         public void onClick(View v) {
             if (v == ivRemove) {
-                //todo:remove item
+                ControllerList.getInstance().removeItem(v.getContext(), item);
+                notifyDataSetChanged();
+
+                //todo:replace with notifyItemRemoved
+
             } else if (v == itemView) {
                 //todo:navigate item
             }

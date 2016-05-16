@@ -20,4 +20,8 @@ public class FragmentPageList extends FragmentList {
         super.onViewCreated(view, savedInstanceState);
         rvItems.setAdapter(adapter);
     }
+
+    public void addItem(){
+        adapter.addItem();
+    }
 }

@@ -58,6 +58,11 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolder> {
         }
     }
 
+    public void addItem() {
+        notifyDataSetChanged();
+        //todo: change with notifyItemAdded;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
@@ -94,7 +99,6 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolder> {
     }
 
     public class ViewHolderWaiting extends ViewHolderList {
-
 
         public ViewHolderWaiting(View itemView) {
             super(itemView);
