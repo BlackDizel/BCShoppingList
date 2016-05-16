@@ -122,6 +122,14 @@ public class ControllerList {
         ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
     }
 
+    public boolean isPurchasedExist(Context context) {
+        if (getData(context) == null) return false;
+        for (ShoppingList item : getData(context))
+            if (!item.isDeleted && isPurchased(item))
+                return true;
+        return false;
+    }
+
     //todo: on add purchase date sort and reverse list
 /*
     Collections.sort(getData(context).get(position).purchasesDates);

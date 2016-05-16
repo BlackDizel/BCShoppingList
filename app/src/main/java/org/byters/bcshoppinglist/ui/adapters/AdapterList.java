@@ -69,6 +69,9 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.ViewHolder> {
         }
 
         public void setData(int position) {
+            itemView.setVisibility(
+                    ControllerList.getInstance().isPurchasedExist(itemView.getContext())
+                            ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
