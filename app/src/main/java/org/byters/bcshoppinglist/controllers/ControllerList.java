@@ -2,6 +2,7 @@ package org.byters.bcshoppinglist.controllers;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import org.byters.bcshoppinglist.model.ShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingListItem;
@@ -24,6 +25,18 @@ public class ControllerList {
     public static ControllerList getInstance() {
         if (instance == null) instance = new ControllerList();
         return instance;
+    }
+
+    public void addItem(Context context, String title) {
+        if (TextUtils.isEmpty(title)) return;
+        ShoppingList item = new ShoppingList();
+        item.title = title;
+        item.isDeleted = false;
+
+
+        if (getData(context) == null) data = new ArrayList<>();
+        getData(context).add(item);
+        ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
     }
 
     public int getCount(@Nullable Context context, int state) {
@@ -78,6 +91,19 @@ public class ControllerList {
             return null;
 
         return getData(context).get(position).purchasesDates.get(0);
+    }
+
+    @Nullable
+    public ShoppingList getItem(Context context, int position) {
+        if (position < 0 || getData(context) == null || getData(context).size() <= position)
+            return null;
+        return getData(context).get(position);
+    }
+
+    public void removeItem(Context context, @Nullable ShoppingList item) {
+        if (getData(context) == null || !getData(context).contains(item)) return;
+        if (getData(context).remove(item))
+            ControllerStorage.writeObjectToFile(context, getData(context), ControllerStorage.CACHE_SHOPPING_LIST);
     }
 
     //todo: on add purchase date sort and reverse list
