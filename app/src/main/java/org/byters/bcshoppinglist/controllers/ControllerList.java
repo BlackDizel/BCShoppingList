@@ -69,7 +69,7 @@ public class ControllerList {
                 || !isPurchased(item) && state == WAITING;
     }
 
-    private boolean isPurchased(ShoppingList item) {
+    public boolean isPurchased(ShoppingList item) {
         if (item == null || item.isDeleted) return true;
         if (item.items == null || item.items.size() == 0) return false;
 
@@ -147,11 +147,5 @@ public class ControllerList {
                 return true;
         return false;
     }
-
-    //todo: on add purchase date sort and reverse list
-/*
-    Collections.sort(getData(context).get(position).purchasesDates);
-    Collections.reverse(getData(context).get(position).purchasesDates);
-*/
 
 }

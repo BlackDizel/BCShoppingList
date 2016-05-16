@@ -8,6 +8,7 @@ import org.byters.bcshoppinglist.model.ShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingListItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ControllerShoppingList {
     private static ControllerShoppingList instance;
@@ -62,6 +63,13 @@ public class ControllerShoppingList {
         if (data == null) return;
         if (item.isNeedToPurchase != !isChecked) {
             item.isNeedToPurchase = !isChecked;
+            if (!item.isNeedToPurchase && ControllerList.getInstance().isPurchased(data)) {
+                if (data.purchasesDates == null) data.purchasesDates = new ArrayList<>();
+                data.purchasesDates.add(System.currentTimeMillis());
+                Collections.sort(data.purchasesDates);
+                Collections.reverse(data.purchasesDates);
+            }
+
             ControllerList.getInstance().saveCache(context);
         }
     }
