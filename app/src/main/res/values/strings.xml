@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Список покупок</string>
-    <string name="dialog_add_item_title">добавить список</string>
-    <string name="dialog_add_item_message">добавленный список будет сохранен</string>
-    <string name="dialog_add_item_hint">введите название списка</string>
+    <string name="dialog_add_list_title">добавить список</string>
+    <string name="dialog_add_list_message">добавленный список будет сохранен</string>
+    <string name="dialog_add_list_hint">введите название списка</string>
+    <string name="dialog_add_list_button_text">Подтвердить</string>
+
+    <string name="dialog_add_item_title">добавить покупку</string>
+    <string name="dialog_add_item_message">добавленная покупка будет сохранена</string>
+    <string name="dialog_add_item_hint">введите название покупки</string>
     <string name="dialog_add_item_button_text">Подтвердить</string>
 </resources>

@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerList;
+import org.byters.bcshoppinglist.controllers.ControllerShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingList;
+import org.byters.bcshoppinglist.ui.activity.ActivityMain;
 import org.byters.bcshoppinglist.ui.utils.Utils;
 
 
@@ -101,6 +103,12 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
                 //todo:replace with notifyItemRemoved
 
             } else if (v == itemView) {
+
+                //fixme dirty hack
+                if (itemView.getContext() instanceof ActivityMain)
+                    ControllerShoppingList.getInstance().setData(item);
+                ((ActivityMain) itemView.getContext()).navigateShoppingList();
+
                 //todo:navigate item
             }
         }

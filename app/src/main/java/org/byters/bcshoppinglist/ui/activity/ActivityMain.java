@@ -10,6 +10,7 @@ import android.view.View;
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.ui.dialog.DialogInput;
 import org.byters.bcshoppinglist.ui.fragment.FragmentPageList;
+import org.byters.bcshoppinglist.ui.fragment.FragmentPageShoppingList;
 
 public class ActivityMain extends ActivityBase
         implements View.OnClickListener
@@ -58,19 +59,26 @@ public class ActivityMain extends ActivityBase
         if (fragment instanceof FragmentPageList) {
 
             dialog = new DialogInput(this
+                    , R.string.dialog_add_list_title
+                    , R.string.dialog_add_list_message
+                    , R.string.dialog_add_list_hint
+                    , R.string.dialog_add_list_button_text
+                    , this);
+            dialog.show();
+            return;
+        } else if (fragment instanceof FragmentPageShoppingList) {
+
+            //todo implement other text
+            dialog = new DialogInput(this
                     , R.string.dialog_add_item_title
                     , R.string.dialog_add_item_message
                     , R.string.dialog_add_item_hint
                     , R.string.dialog_add_item_button_text
                     , this);
             dialog.show();
+            return;
         }
-
-        //todo: implement.
-        //todo: our app will have 2 screens: lists and shopping list.
-        //todo: screens will be fragment, which loaded into main activity
-        //todo: over fragments one activity fab will shown
-        //todo: fab action depends on fragment shown
+        dialog = null;
     }
 
     @Override
@@ -80,6 +88,24 @@ public class ActivityMain extends ActivityBase
         if (fragment instanceof FragmentPageList) {
             if (this.dialog == null) return;
             ((FragmentPageList) fragment).addItem(this, this.dialog.getTitle());
+        } else if (fragment instanceof FragmentPageShoppingList) {
+            if (this.dialog == null) return;
+            ((FragmentPageShoppingList) fragment).addItem(this, this.dialog.getTitle());
         }
+
+        this.dialog = null;
+    }
+
+    public void navigateShoppingList() {
+        //todo: add animation
+        //transaction.setCustomAnimations(animIn, animOut);
+
+        Fragment fragment = new FragmentPageShoppingList();
+        if (fragment == null) return;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.contentView, fragment, TAG_PAGE)
+                .commit();
     }
 }
