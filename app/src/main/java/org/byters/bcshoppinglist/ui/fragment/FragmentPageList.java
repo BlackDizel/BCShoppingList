@@ -1,8 +1,10 @@
 package org.byters.bcshoppinglist.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import org.byters.bcshoppinglist.controllers.ControllerList;
 import org.byters.bcshoppinglist.ui.adapters.AdapterList;
 
 public class FragmentPageList extends FragmentList {
@@ -21,7 +23,8 @@ public class FragmentPageList extends FragmentList {
         rvItems.setAdapter(adapter);
     }
 
-    public void addItem(){
+    public void addItem(Context context, String title) {
+        ControllerList.getInstance().addItem(context, title);
         adapter.addItem();
     }
 }
