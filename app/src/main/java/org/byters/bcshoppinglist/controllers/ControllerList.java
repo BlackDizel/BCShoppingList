@@ -57,7 +57,8 @@ public class ControllerList {
     }
 
     private boolean isPurchased(ShoppingList item) {
-        if (item == null || item.isDeleted || item.items == null) return true;
+        if (item == null || item.isDeleted) return true;
+        if (item.items == null || item.items.size() == 0) return false;
 
         for (ShoppingListItem shoppingListItem : item.items)
             if (shoppingListItem.isNeedToPurchase) return false;
