@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import org.byters.bcshoppinglist.controllers.utils.UpdateListener;
 import org.byters.bcshoppinglist.model.ShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingListItem;
 
@@ -19,12 +20,24 @@ public class ControllerList {
     @Nullable
     private ArrayList<ShoppingList> data;
 
+    private ArrayList<UpdateListener> listeners;
+
     private ControllerList() {
     }
 
     public static ControllerList getInstance() {
         if (instance == null) instance = new ControllerList();
         return instance;
+    }
+
+    public void addListener(UpdateListener listener) {
+        if (listeners == null) listeners = new ArrayList<>();
+        listeners.add(listener);
+    }
+
+    public void removeListener(UpdateListener listener) {
+        if (listeners == null) return;
+        listeners.remove(listener);
     }
 
     public void addItem(Context context, String title) {
@@ -114,6 +127,11 @@ public class ControllerList {
 
     public void removeItem(Context context, @Nullable ShoppingList item) {
         if (getData(context) == null || !getData(context).contains(item)) return;
+
+        if (listeners != null)
+            for (UpdateListener listener : listeners)
+                listener.onListRemove(item);
+
         if (getData(context).remove(item))
             saveCache(context);
     }
