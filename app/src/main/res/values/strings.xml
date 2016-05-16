@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BCShoppingList</string>
+    <string name="app_name">Список покупок</string>
     <string name="dialog_add_item_title">добавить список</string>
     <string name="dialog_add_item_message">добавленный список будет сохранен</string>
     <string name="dialog_add_item_hint">введите название списка</string>
