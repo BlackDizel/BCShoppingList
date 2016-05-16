@@ -79,14 +79,14 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
 
         public void setData(int position) {
 
-            item = ControllerList.getInstance().getItem(itemView.getContext(), position);
-            String title = ControllerList.getInstance().getTitle(itemView.getContext(), position);
+            item = ControllerList.getInstance().getItem(itemView.getContext(), position, state);
+            String title = ControllerList.getInstance().getTitle(itemView.getContext(), position, state);
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
 
             if (state == ControllerList.PURCHASED) {
 
                 String textDate = Utils.getDateDisplay(itemView.getContext()
-                        , ControllerList.getInstance().getLastPurchaseDate(itemView.getContext(), position));
+                        , ControllerList.getInstance().getLastPurchaseDate(itemView.getContext(), position, state));
                 tvPurchaseDate.setText(TextUtils.isEmpty(textDate) ? "" : textDate);
             } else if (state == ControllerList.WAITING) {
                 tvPurchaseDate.setVisibility(View.GONE);

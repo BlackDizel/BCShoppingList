@@ -76,29 +76,40 @@ public class ControllerList {
     }
 
     @Nullable
-    public String getTitle(Context context, int position) {
-        if (position < 0 || getData(context) == null || getData(context).size() <= position)
-            return null;
-        return getData(context).get(position).title;
+    public String getTitle(Context context, int position, int state) {
+        ShoppingList item = getItem(context, position, state);
+        if (item == null) return null;
+        return item.title;
     }
 
     @Nullable
-    public Long getLastPurchaseDate(Context context, int position) {
-        if (position < 0
-                || getData(context) == null
-                || getData(context).size() <= position
-                || getData(context).get(position).purchasesDates == null
-                || getData(context).get(position).purchasesDates.size() == 0)
+    public Long getLastPurchaseDate(Context context, int position, int state) {
+        ShoppingList item = getItem(context, position, state);
+
+        if (item == null
+                || item.purchasesDates == null
+                || item.purchasesDates.size() == 0)
             return null;
 
-        return getData(context).get(position).purchasesDates.get(0);
+        return item.purchasesDates.get(0);
     }
 
     @Nullable
-    public ShoppingList getItem(Context context, int position) {
+    public ShoppingList getItem(Context context, int position, int state) {
+        //fixme: remove dirty hack. store lists with different states in different lists
+
         if (position < 0 || getData(context) == null || getData(context).size() <= position)
             return null;
-        return getData(context).get(position);
+
+        ArrayList<ShoppingList> items = new ArrayList<>();
+        for (ShoppingList item : getData(context)) {
+            if (isStateEqual(item, state))
+                items.add(item);
+        }
+
+        if (items.size() <= position)
+            return null;
+        return items.get(position);
     }
 
     public void removeItem(Context context, @Nullable ShoppingList item) {
