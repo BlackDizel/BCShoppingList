@@ -5,4 +5,5 @@
     <dimen name="delimeter_height">1dp</dimen>
     <dimen name="view_list_item_padding">16dp</dimen>
     <dimen name="dialog_input_padding">16dp</dimen>
+    <dimen name="shopping_list_item_padding">16dp</dimen>
 </resources>
