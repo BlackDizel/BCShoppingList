@@ -2,10 +2,12 @@ package org.byters.bcshoppinglist.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.byters.bcshoppinglist.R;
+import org.byters.bcshoppinglist.ui.fragment.FragmentPageList;
 
 public class ActivityMain extends ActivityBase
         implements View.OnClickListener {
@@ -23,7 +25,7 @@ public class ActivityMain extends ActivityBase
     }
 
     private void initPage() {
-    /*    Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_PAGE);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_PAGE);
         if (fragment == null) {
             fragment = new FragmentPageList();
             fragment.setRetainInstance(true);
@@ -31,7 +33,7 @@ public class ActivityMain extends ActivityBase
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.contentView, fragment, TAG_PAGE)
-                .commit();*/
+                .commit();
     }
 
     private void initFloatingAction() {
