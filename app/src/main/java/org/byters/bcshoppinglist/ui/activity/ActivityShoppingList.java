@@ -1,6 +1,8 @@
 package org.byters.bcshoppinglist.ui.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,17 +14,21 @@ import org.byters.bcshoppinglist.ui.dialog.DialogInput;
 import org.byters.bcshoppinglist.ui.fragment.FragmentPageList;
 import org.byters.bcshoppinglist.ui.fragment.FragmentPageShoppingList;
 
-public class ActivityMain extends ActivityBase
+public class ActivityShoppingList extends ActivityBase
         implements View.OnClickListener
         , DialogInterface.OnClickListener {
 
     private static final String TAG_PAGE = "tag_fragment";
     private DialogInput dialog;
 
+    public static void display(Context context) {
+        context.startActivity(new Intent(context, ActivityShoppingList.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_shopping_list);
 
         initToolbar();
         initFloatingAction();

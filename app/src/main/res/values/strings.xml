@@ -10,4 +10,6 @@
     <string name="dialog_add_item_hint">введите название покупки</string>
     <string name="dialog_add_item_button_text">Подтвердить</string>
     <string name="view_list_item_delimeter_text">КУПЛЕННЫЕ РАНЕЕ</string>
+    <string name="activity_menu_search">ПОИСК</string>
+    <string name="activity_menu_shopping">СПИСОК ПОКУПОК</string>
 </resources>

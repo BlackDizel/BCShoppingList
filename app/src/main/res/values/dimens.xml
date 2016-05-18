@@ -7,4 +7,6 @@
     <dimen name="dialog_input_padding">16dp</dimen>
     <dimen name="shopping_list_item_padding">16dp</dimen>
     <dimen name="view_list_item_delimeter_padding">16dp</dimen>
+    <dimen name="activity_menu_delimeter">32dp</dimen>
+    <dimen name="activity_menu_content_padding">32dp</dimen>
 </resources>

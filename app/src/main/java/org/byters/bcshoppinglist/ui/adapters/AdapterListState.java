@@ -16,7 +16,7 @@ import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerList;
 import org.byters.bcshoppinglist.controllers.ControllerShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingList;
-import org.byters.bcshoppinglist.ui.activity.ActivityMain;
+import org.byters.bcshoppinglist.ui.activity.ActivityShoppingList;
 import org.byters.bcshoppinglist.ui.utils.Utils;
 
 
@@ -105,9 +105,9 @@ public class AdapterListState extends RecyclerView.Adapter<AdapterListState.View
             } else if (v == itemView) {
 
                 //fixme dirty hack
-                if (itemView.getContext() instanceof ActivityMain)
+                if (itemView.getContext() instanceof ActivityShoppingList)
                     ControllerShoppingList.getInstance().setData(item);
-                ((ActivityMain) itemView.getContext()).navigateShoppingList();
+                ((ActivityShoppingList) itemView.getContext()).navigateShoppingList();
 
                 //todo:navigate item
             }
