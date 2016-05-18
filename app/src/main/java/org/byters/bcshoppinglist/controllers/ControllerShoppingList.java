@@ -80,4 +80,10 @@ public class ControllerShoppingList {
             return null;
         return data.items.get(position);
     }
+
+    public void removeItem(Context context, ShoppingListItem item) {
+        if (item == null || data == null || data.items == null) return;
+        data.items.remove(item);
+        ControllerList.getInstance().saveCache(context);
+    }
 }

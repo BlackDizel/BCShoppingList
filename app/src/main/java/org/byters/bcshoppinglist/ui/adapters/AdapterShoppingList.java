@@ -50,7 +50,8 @@ public class AdapterShoppingList extends RecyclerView.Adapter<AdapterShoppingLis
 
 
     public class ViewHolder extends RecyclerView.ViewHolder
-            implements CheckBox.OnCheckedChangeListener {
+            implements CheckBox.OnCheckedChangeListener
+            , View.OnClickListener {
         private TextView tvTitle;
         private CheckBox cbItem;
 
@@ -63,6 +64,7 @@ public class AdapterShoppingList extends RecyclerView.Adapter<AdapterShoppingLis
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
 
             cbItem.setOnCheckedChangeListener(this);
+            itemView.findViewById(R.id.ivRemove).setOnClickListener(this);
         }
 
         public void setData(int position) {
@@ -75,6 +77,13 @@ public class AdapterShoppingList extends RecyclerView.Adapter<AdapterShoppingLis
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             ControllerShoppingList.getInstance().setItemChecked(buttonView.getContext(), item, isChecked);
+        }
+
+        @Override
+        public void onClick(View v) {
+            ControllerShoppingList.getInstance().removeItem(v.getContext(), item);
+            //todo use notifyItemRemoved();
+            notifyDataSetChanged();
         }
     }
 }
