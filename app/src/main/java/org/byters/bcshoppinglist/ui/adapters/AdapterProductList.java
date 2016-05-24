@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerProductList;
+import org.byters.bcshoppinglist.ui.activity.ActivityMarketMap;
 
 
 public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.ViewHolder> {
@@ -43,7 +44,8 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
         private TextView tvTitle, tvCategory;
 
@@ -51,6 +53,7 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvCategory = (TextView) itemView.findViewById(R.id.tvCategory);
+            itemView.setOnClickListener(this);
         }
 
         public void setData(int position) {
@@ -61,5 +64,9 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
             tvCategory.setText(TextUtils.isEmpty(categoryTitle) ? "" : categoryTitle);
         }
 
+        @Override
+        public void onClick(View v) {
+            ActivityMarketMap.display(v.getContext());
+        }
     }
 }
