@@ -51,6 +51,7 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
             implements View.OnClickListener {
         private TextView tvTitle, tvAddress;
         private ImageView ivMarket;
+        private int id;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -58,9 +59,12 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
             itemView.setOnClickListener(this);
+            id = ControllerMarketList.NO_VALUE;
         }
 
         public void setData(int position) {
+            id = ControllerMarketList.getInstance().getMarketId(position);
+
             String imageUri = ControllerMarketList.getInstance().getImageUri(position);
             if (TextUtils.isEmpty(imageUri))
                 ivMarket.setImageDrawable(null);
@@ -76,6 +80,7 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
 
         @Override
         public void onClick(View v) {
+            ControllerMarketList.getInstance().setSelectedMarketId(id);
             ActivityMarketProductList.display(v.getContext());
         }
     }
