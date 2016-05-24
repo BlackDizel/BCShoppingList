@@ -13,10 +13,19 @@ public class ActivityMenu extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         findViewById(R.id.tvShoppingList).setOnClickListener(this);
+        findViewById(R.id.tvSearch).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        ActivityShoppingList.display(this);
+        switch (v.getId()){
+            case R.id.tvSearch:
+                ActivityMarketList.display(this);
+                break;
+            case R.id.tvShoppingList:
+                ActivityShoppingList.display(this);
+                break;
+        }
+
     }
 }
