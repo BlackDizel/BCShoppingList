@@ -47,6 +47,7 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
+        private int categoryId;
         private TextView tvTitle, tvCategory;
 
         public ViewHolder(View itemView) {
@@ -57,6 +58,7 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
         }
 
         public void setData(int position) {
+            categoryId = ControllerProductList.getInstance().getFilteredCategoryId(position);
 
             String title = ControllerProductList.getInstance().getFilteredItemTitle(position);
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
@@ -66,6 +68,7 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
 
         @Override
         public void onClick(View v) {
+            ControllerProductList.getInstance().setSelectedCategoryId(categoryId);
             ActivityMarketMap.display(v.getContext());
         }
     }
