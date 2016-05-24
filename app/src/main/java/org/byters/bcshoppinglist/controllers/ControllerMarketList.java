@@ -15,9 +15,15 @@ import retrofit2.Response;
 public class ControllerMarketList
         implements Callback<ArrayList<Store>> {
 
+    public static final int NO_VALUE = -1;
     private static ControllerMarketList instance;
     private ArrayList<Store> data;
     private ArrayList<OnMarketListUpdateListener> listeners;
+    private int selectedMarketId;
+
+    private ControllerMarketList() {
+        selectedMarketId = NO_VALUE;
+    }
 
     public static ControllerMarketList getInstance() {
         if (instance == null) instance = new ControllerMarketList();
@@ -86,5 +92,19 @@ public class ControllerMarketList
         Store item = getItem(position);
         if (item == null) return null;
         return item.address;
+    }
+
+    public int getSelectedMarketId() {
+        return selectedMarketId;
+    }
+
+    public void setSelectedMarketId(int id) {
+        this.selectedMarketId = id;
+    }
+
+    public int getMarketId(int position) {
+        Store item = getItem(position);
+        if (item == null) return NO_VALUE;
+        return item.id;
     }
 }
