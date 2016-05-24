@@ -1,10 +1,12 @@
 package org.byters.bcshoppinglist.controllers;
 
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.byters.bcshoppinglist.api.ServiceShoppingList;
 import org.byters.bcshoppinglist.controllers.utils.OnProductListUpdateListener;
+import org.byters.bcshoppinglist.model.Coord;
 import org.byters.bcshoppinglist.model.Product;
 import org.byters.bcshoppinglist.model.ProductFiltered;
 import org.byters.bcshoppinglist.model.StoreCategory;
@@ -18,11 +20,17 @@ import retrofit2.Response;
 public class ControllerProductList
         implements Callback<ArrayList<StoreCategory>> {
 
+    private static final int NO_VALUE = -1;
     private static ControllerProductList instance;
     private ArrayList<StoreCategory> data;
     private ArrayList<ProductFiltered> dataFiltered;
     private ArrayList<OnProductListUpdateListener> listeners;
     private String search;
+    private int selectedCategoryId;
+
+    private ControllerProductList() {
+        selectedCategoryId = NO_VALUE;
+    }
 
     public static ControllerProductList getInstance() {
         if (instance == null) instance = new ControllerProductList();
@@ -117,6 +125,14 @@ public class ControllerProductList
     }
 
     @Nullable
+    public int getFilteredCategoryId(int position) {
+        if (dataFiltered == null) return NO_VALUE;
+        ProductFiltered item = getFilteredItem(position);
+        if (item == null) return NO_VALUE;
+        return item.categoryId;
+    }
+
+    @Nullable
     private ProductFiltered getFilteredItem(int position) {
         if (dataFiltered == null || position < 0 || dataFiltered.size() <= position) return null;
         return dataFiltered.get(position);
@@ -133,5 +149,42 @@ public class ControllerProductList
                 return category.name;
 
         return null;
+    }
+
+    @Nullable
+    public ArrayList<ArrayList<Point>> getSelectedItemPolygon() {
+        if (selectedCategoryId == NO_VALUE || data == null) return null;
+
+        StoreCategory category = null;
+        for (StoreCategory item : data)
+            if (item.id == selectedCategoryId) {
+                category = item;
+                break;
+            }
+
+        if (category == null || category.coords == null || category.coords.size() == 0) return null;
+
+        ArrayList<ArrayList<Point>> result = null;
+
+        for (ArrayList<Coord> array : category.coords) {
+
+            ArrayList<Point> points = null;
+
+            for (Coord coord : array) {
+                Point point = new Point(coord.x, coord.y);
+                if (points == null) points = new ArrayList<>();
+                points.add(point);
+            }
+
+            if (points == null) continue;
+
+            if (result == null) result = new ArrayList<>();
+            result.add(points);
+        }
+        return result;
+    }
+
+    public void setSelectedCategoryId(int id) {
+        selectedCategoryId = id;
     }
 }
