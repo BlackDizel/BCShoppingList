@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerMarketList;
+import org.byters.bcshoppinglist.ui.activity.ActivityMarketProductList;
 
 
 public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHolder> {
@@ -46,7 +47,8 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         private TextView tvTitle, tvAddress;
         private ImageView ivMarket;
 
@@ -55,6 +57,7 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
             ivMarket = (ImageView) itemView.findViewById(R.id.ivMarket);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
+            itemView.setOnClickListener(this);
         }
 
         public void setData(int position) {
@@ -71,5 +74,9 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
 
         }
 
+        @Override
+        public void onClick(View v) {
+            ActivityMarketProductList.display(v.getContext());
+        }
     }
 }
