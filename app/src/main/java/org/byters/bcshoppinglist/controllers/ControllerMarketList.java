@@ -80,4 +80,11 @@ public class ControllerMarketList
         if (item == null) return null;
         return item.name;
     }
+
+    @Nullable
+    public String getAddress(int position) {
+        Store item = getItem(position);
+        if (item == null) return null;
+        return item.address;
+    }
 }

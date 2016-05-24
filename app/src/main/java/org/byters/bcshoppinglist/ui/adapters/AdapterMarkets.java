@@ -47,13 +47,14 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvTitle;
+        private TextView tvTitle, tvAddress;
         private ImageView ivMarket;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ivMarket = (ImageView) itemView.findViewById(R.id.ivMarket);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
         }
 
         public void setData(int position) {
@@ -64,6 +65,9 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
 
             String title = ControllerMarketList.getInstance().getTitle(position);
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
+
+            String address = ControllerMarketList.getInstance().getAddress(position);
+            tvAddress.setText(TextUtils.isEmpty(address) ? "" : address);
 
         }
 
