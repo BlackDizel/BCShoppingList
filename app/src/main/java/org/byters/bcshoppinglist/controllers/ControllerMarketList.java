@@ -107,4 +107,15 @@ public class ControllerMarketList
         if (item == null) return NO_VALUE;
         return item.id;
     }
+
+    public String getSelectedMarketMapUri() {
+        if (getSelectedMarketId() == NO_VALUE || data == null)
+            return null;
+
+        for (Store item : data)
+            if (item.id == getSelectedMarketId())
+                return item.urlMap;
+
+        return null;
+    }
 }
