@@ -12,4 +12,5 @@
     <string name="view_list_item_delimeter_text">КУПЛЕННЫЕ РАНЕЕ</string>
     <string name="activity_menu_search">ПОИСК</string>
     <string name="activity_menu_shopping">СПИСОК ПОКУПОК</string>
+    <string name="activity_market_product_list_search">Поиск</string>
 </resources>
