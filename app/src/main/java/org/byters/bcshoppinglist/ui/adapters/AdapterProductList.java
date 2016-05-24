@@ -3,11 +3,14 @@ package org.byters.bcshoppinglist.ui.adapters;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
+import org.byters.bcshoppinglist.controllers.ControllerProductList;
 
 
 public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.ViewHolder> {
@@ -32,17 +35,30 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
 
     @Override
     public int getItemCount() {
-        return 0;
+        return ControllerProductList.getInstance().getFilteredItemsCount();
+    }
+
+    public void updateData() {
+        notifyDataSetChanged();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tvTitle, tvCategory;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvCategory = (TextView) itemView.findViewById(R.id.tvCategory);
         }
 
         public void setData(int position) {
 
+            String title = ControllerProductList.getInstance().getFilteredItemTitle(position);
+            tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
+            String categoryTitle = ControllerProductList.getInstance().getFilteredItemCategoryTitle(position);
+            tvCategory.setText(TextUtils.isEmpty(categoryTitle) ? "" : categoryTitle);
         }
 
     }
