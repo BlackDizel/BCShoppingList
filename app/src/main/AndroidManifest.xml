@@ -15,6 +15,7 @@
         <activity android:name=".ui.activity.ActivityShoppingList" />
         <activity android:name=".ui.activity.ActivityMarketList" />
         <activity android:name=".ui.activity.ActivityMarketProductList" />
+        <activity android:name=".ui.activity.ActivityMarketMap" />
         <activity android:name=".ui.activity.ActivityMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
