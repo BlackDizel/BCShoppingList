@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -30,7 +32,22 @@ public class ActivityMarketMap extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_map);
 
+        initToolbar();
         initMap();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            onBackPressed();
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initMap() {
