@@ -31,20 +31,27 @@ public class ActivityMarketProductList extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_product_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ControllerProductList.getInstance().clearSearch();
+        initToolbar();
+        initList();
+    }
 
+    private void initList() {
         RecyclerView rvProducts = (RecyclerView) findViewById(R.id.rvProducts);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterProductList();
         rvProducts.setAdapter(adapter);
     }
 
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        ControllerProductList.getInstance().clearSearch();
         ControllerProductList.getInstance().updateData();
         ControllerProductList.getInstance().addListener(this);
     }
