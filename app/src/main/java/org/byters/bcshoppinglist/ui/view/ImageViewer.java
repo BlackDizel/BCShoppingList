@@ -86,7 +86,7 @@ public class ImageViewer extends View {
     private void initRects() {
         if (imageWidth == 0 || imageHeight == 0
                 || dstOrig.bottom == 0 || dstOrig.right == 0) return;
-        int calcHeight = imageHeight / (imageWidth / dstOrig.right);
+        int calcHeight = (int) (imageHeight / ((float) imageWidth / dstOrig.right));
         dst.bottom = calcHeight;
         dstOrig.bottom = calcHeight;
     }
