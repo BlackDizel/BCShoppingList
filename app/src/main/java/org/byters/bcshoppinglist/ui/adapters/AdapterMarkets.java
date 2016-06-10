@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerMarketList;
-import org.byters.bcshoppinglist.ui.activity.ActivityMarketProductList;
+import org.byters.bcshoppinglist.ui.activity.ActivityMarketList;
 
 
 public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHolder> {
@@ -81,7 +81,8 @@ public class AdapterMarkets extends RecyclerView.Adapter<AdapterMarkets.ViewHold
         @Override
         public void onClick(View v) {
             ControllerMarketList.getInstance().setSelectedMarketId(id);
-            ActivityMarketProductList.display(v.getContext());
+            if (v.getContext() instanceof ActivityMarketList)
+                ((ActivityMarketList) v.getContext()).navigateNext();
         }
     }
 }

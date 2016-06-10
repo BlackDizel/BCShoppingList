@@ -3,20 +3,13 @@ package org.byters.bcshoppinglist.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.byters.bcshoppinglist.R;
-import org.byters.bcshoppinglist.controllers.ControllerMarketList;
-import org.byters.bcshoppinglist.controllers.utils.OnMarketListUpdateListener;
-import org.byters.bcshoppinglist.ui.adapters.AdapterMarkets;
+import org.byters.bcshoppinglist.ui.fragment.FragmentMarketList;
 
-public class ActivityMarketList extends ActivityBase
-        implements OnMarketListUpdateListener {
-
-    private AdapterMarkets adapter;
+public class ActivityMarketList extends ActivityBase {
 
     public static void display(Context context) {
         context.startActivity(new Intent(context, ActivityMarketList.class));
@@ -26,16 +19,15 @@ public class ActivityMarketList extends ActivityBase
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_list);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flContent, new FragmentMarketList())
+                .commit();
+
         initToolbar();
-        initList();
     }
 
-    private void initList() {
-        RecyclerView rvMarkets = (RecyclerView) findViewById(R.id.rvMarkets);
-        rvMarkets.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AdapterMarkets();
-        rvMarkets.setAdapter(adapter);
-    }
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,22 +43,7 @@ public class ActivityMarketList extends ActivityBase
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ControllerMarketList.getInstance().addListener(this);
-        ControllerMarketList.getInstance().updateData();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        ControllerMarketList.getInstance().removeListener(this);
-    }
-
-    @Override
-    public void onMarketListUpdate() {
-        adapter.updateData();
+    public void navigateNext() {
+        ActivityMarketProductList.display(this);
     }
 }
