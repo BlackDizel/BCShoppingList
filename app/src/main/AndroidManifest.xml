@@ -17,9 +17,6 @@
             android:name=".ui.activity.ActivityMarketList"
             android:label="@string/activity_market_list_label" />
         <activity
-            android:name=".ui.activity.ActivityMarketProductList"
-            android:label="@string/activity_product_list_label" />
-        <activity
             android:name=".ui.activity.ActivityMarketMap"
             android:label="@string/activity_map_label" />
         <activity android:name=".ui.activity.ActivityMenu">
