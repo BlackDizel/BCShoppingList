@@ -11,8 +11,18 @@ import org.byters.bcshoppinglist.ui.fragment.FragmentMarketList;
 
 public class ActivityMarketList extends ActivityBase {
 
+    private static final String INTENT_TYPE = "intent_type";
+    private static final int TYPE_LIST = 0;
+    private static final int NO_VALUE = -1;
+
     public static void display(Context context) {
         context.startActivity(new Intent(context, ActivityMarketList.class));
+    }
+
+    public static void displayForList(Context context) {
+        Intent intent = new Intent(context, ActivityMarketList.class);
+        intent.putExtra(INTENT_TYPE, TYPE_LIST);
+        context.startActivity(intent);
     }
 
     @Override
@@ -44,6 +54,9 @@ public class ActivityMarketList extends ActivityBase {
     }
 
     public void navigateNext() {
-        ActivityMarketProductList.display(this);
+        int type = getIntent().getIntExtra(INTENT_TYPE, NO_VALUE);
+        if (type == NO_VALUE)
+            ActivityMarketProductList.display(this);
+        else ActivityMarketMap.displayForList(this);
     }
 }

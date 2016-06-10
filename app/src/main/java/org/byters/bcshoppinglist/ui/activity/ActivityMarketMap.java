@@ -27,6 +27,10 @@ public class ActivityMarketMap extends ActivityBase
         context.startActivity(new Intent(context, ActivityMarketMap.class));
     }
 
+    public static void displayForList(Context context) {
+        context.startActivity(new Intent(context, ActivityMarketMap.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
