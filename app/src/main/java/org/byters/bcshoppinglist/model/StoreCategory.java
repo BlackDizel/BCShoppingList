@@ -42,4 +42,24 @@ public class StoreCategory {
         }
         return result;
     }
+
+    public boolean containsPoint(int x, int y) {
+        if (coords == null) return false;
+        for (ArrayList<Coord> path : coords) {
+            int i;
+            int j;
+            boolean result = false;
+            for (i = 0, j = path.size() - 1; i < path.size(); j = i++) {
+                if ((path.get(i).y > y) != (path.get(j).y > y) &&
+                        (x < (path.get(j).x - path.get(i).x)
+                                * (y - path.get(i).y)
+                                / (path.get(j).y - path.get(i).y) + path.get(i).x)) {
+                    result = !result;
+                }
+            }
+            if (result) return true;
+        }
+
+        return false;
+    }
 }
