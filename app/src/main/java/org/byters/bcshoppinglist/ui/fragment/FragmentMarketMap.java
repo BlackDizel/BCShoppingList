@@ -1,14 +1,19 @@
 package org.byters.bcshoppinglist.ui.fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -16,15 +21,21 @@ import com.squareup.picasso.Target;
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerMarketList;
 import org.byters.bcshoppinglist.controllers.ControllerProductList;
+import org.byters.bcshoppinglist.controllers.ControllerShoppingList;
 import org.byters.bcshoppinglist.controllers.utils.OnProductListUpdateListener;
+import org.byters.bcshoppinglist.controllers.utils.OnTapListener;
+import org.byters.bcshoppinglist.model.StoreCategory;
 import org.byters.bcshoppinglist.ui.activity.ActivityMarketList;
+import org.byters.bcshoppinglist.ui.adapters.AdapterShoppingListItemsCategory;
 import org.byters.bcshoppinglist.ui.view.ImageViewer;
 
 import java.util.ArrayList;
 
 public class FragmentMarketMap extends FragmentBase
         implements Target
-        , OnProductListUpdateListener {
+        , OnProductListUpdateListener
+        , OnTapListener
+        , DialogInterface.OnDismissListener {
 
     public static Fragment newInstance(int type) {
         Fragment fragment = new FragmentMarketMap();
@@ -42,14 +53,16 @@ public class FragmentMarketMap extends FragmentBase
     @Override
     public void onResume() {
         super.onResume();
-
-
+        ImageViewer imageViewer = (ImageViewer) getView().findViewById(R.id.ivMap);
+        imageViewer.addTapListener(this);
         ControllerProductList.getInstance().addListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        ImageViewer imageViewer = (ImageViewer) getView().findViewById(R.id.ivMap);
+        imageViewer.removeTapListener(this);
         ControllerProductList.getInstance().removeListener(this);
     }
 
@@ -106,5 +119,32 @@ public class FragmentMarketMap extends FragmentBase
     @Override
     public void onProductListUpdate() {
         setImageData();
+    }
+
+    @Override
+    public void onTap(int x, int y) {
+
+        StoreCategory category = ControllerProductList.getInstance().getCategory(x, y);
+        if (category == null) return;
+
+        ControllerShoppingList.getInstance().setItemsInCategory(category);
+        if (ControllerShoppingList.getInstance().getCountInCategory() == 0)
+            return;
+
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        dialog.setContentView(R.layout.view_dialog_shopping_list_items);
+
+        ((TextView) dialog.findViewById(R.id.tvTitle)).setText(category.name);
+        RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.rvItems);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new AdapterShoppingListItemsCategory());
+
+        dialog.setOnDismissListener(this);
+        dialog.show();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        ControllerShoppingList.getInstance().clearCategory();
     }
 }
