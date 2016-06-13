@@ -187,4 +187,30 @@ public class ControllerProductList
     public void setSelectedCategoryId(int id) {
         selectedCategoryId = id;
     }
+
+    public ArrayList<ArrayList<Point>> getCurrentShoppingListCategoryList() {
+
+        if (ControllerShoppingList.getInstance().getItems() == null || data == null) return null;
+
+        ArrayList<StoreCategory> categories = new ArrayList<>();
+        for (StoreCategory category : data)
+            if (category.containsAny(ControllerShoppingList.getInstance().getItems()))
+                categories.add(category);
+
+        if (categories.size() == 0) return null;
+
+        ArrayList<ArrayList<Point>> result = null;
+        for (StoreCategory category : categories) {
+            ArrayList<ArrayList<Point>> polygon = category.getPolygon();
+            if (polygon == null) continue;
+            if (result == null) result = new ArrayList<>();
+            result.addAll(polygon);
+        }
+
+        return result;
+    }
+
+    public boolean isEmpty() {
+        return data == null;
+    }
 }
