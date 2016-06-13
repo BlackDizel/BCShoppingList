@@ -3,6 +3,7 @@ package org.byters.bcshoppinglist.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -13,9 +14,9 @@ import org.byters.bcshoppinglist.ui.fragment.FragmentMarketProductList;
 
 public class ActivityMarketList extends ActivityBase {
 
-    private static final String INTENT_TYPE = "intent_type";
-    private static final int TYPE_LIST = 0;
-    private static final int NO_VALUE = -1;
+    public static final String INTENT_TYPE = "intent_type";
+    public static final int TYPE_LIST = 0;
+    public static final int NO_VALUE = -1;
 
     public static void display(Context context) {
         context.startActivity(new Intent(context, ActivityMarketList.class));
@@ -64,13 +65,14 @@ public class ActivityMarketList extends ActivityBase {
                     .addToBackStack(null)
                     .commit();
         } else
-            navigateMap();
+            navigateMap(type);
     }
 
-    public void navigateMap() {
+    public void navigateMap(int type) {
+        Fragment fragment = FragmentMarketMap.newInstance(type);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.flContent, new FragmentMarketMap())
+                .replace(R.id.flContent, fragment)
                 .addToBackStack(null)
                 .commit();
 

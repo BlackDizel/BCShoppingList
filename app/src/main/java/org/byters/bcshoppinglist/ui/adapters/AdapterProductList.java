@@ -70,7 +70,7 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
         public void onClick(View v) {
             ControllerProductList.getInstance().setSelectedCategoryId(categoryId);
             if (v.getContext() instanceof ActivityMarketList)
-                ((ActivityMarketList) v.getContext()).navigateMap();
+                ((ActivityMarketList) v.getContext()).navigateMap(ActivityMarketList.NO_VALUE);
         }
     }
 }
