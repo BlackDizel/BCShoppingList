@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerProductList;
-import org.byters.bcshoppinglist.ui.activity.ActivityMarketMap;
+import org.byters.bcshoppinglist.ui.activity.ActivityMarketList;
 
 
 public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.ViewHolder> {
@@ -69,7 +69,8 @@ public class AdapterProductList extends RecyclerView.Adapter<AdapterProductList.
         @Override
         public void onClick(View v) {
             ControllerProductList.getInstance().setSelectedCategoryId(categoryId);
-            ActivityMarketMap.display(v.getContext());
+            if (v.getContext() instanceof ActivityMarketList)
+                ((ActivityMarketList) v.getContext()).navigateMap();
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.ui.fragment.FragmentMarketList;
+import org.byters.bcshoppinglist.ui.fragment.FragmentMarketMap;
 import org.byters.bcshoppinglist.ui.fragment.FragmentMarketProductList;
 
 public class ActivityMarketList extends ActivityBase {
@@ -62,6 +63,17 @@ public class ActivityMarketList extends ActivityBase {
                     .replace(R.id.flContent, new FragmentMarketProductList())
                     .addToBackStack(null)
                     .commit();
-        } else ActivityMarketMap.displayForList(this);
+        } else
+            navigateMap();
     }
+
+    public void navigateMap() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flContent, new FragmentMarketMap())
+                .addToBackStack(null)
+                .commit();
+
+    }
+
 }
