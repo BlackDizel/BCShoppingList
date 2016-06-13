@@ -213,4 +213,20 @@ public class ControllerProductList
     public boolean isEmpty() {
         return data == null;
     }
+
+    /**
+     * return first category on this coords
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    @Nullable
+    public StoreCategory getCategory(int x, int y) {
+        if (data == null) return null;
+        for (StoreCategory category : data)
+            if (category.containsPoint(x, y))
+                return category;
+        return null;
+    }
 }
