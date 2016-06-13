@@ -86,4 +86,9 @@ public class ControllerShoppingList {
         data.items.remove(item);
         ControllerList.getInstance().saveCache(context);
     }
+
+    @Nullable
+    public ArrayList<ShoppingListItem> getItems() {
+        return data == null ? null : data.items;
+    }
 }
