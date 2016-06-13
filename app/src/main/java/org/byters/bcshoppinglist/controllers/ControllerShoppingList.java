@@ -1,11 +1,14 @@
 package org.byters.bcshoppinglist.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import org.byters.bcshoppinglist.model.Product;
 import org.byters.bcshoppinglist.model.ShoppingList;
 import org.byters.bcshoppinglist.model.ShoppingListItem;
+import org.byters.bcshoppinglist.model.StoreCategory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +17,7 @@ public class ControllerShoppingList {
     private static ControllerShoppingList instance;
     @Nullable
     private ShoppingList data;
-
+    private ArrayList<ShoppingListItem> dataInCategory;
 
     private ControllerShoppingList() {
     }
@@ -22,6 +25,21 @@ public class ControllerShoppingList {
     public static ControllerShoppingList getInstance() {
         if (instance == null) instance = new ControllerShoppingList();
         return instance;
+    }
+
+    public void setItemsInCategory(@NonNull StoreCategory category) {
+        if (data == null || data.items == null || category == null) return;
+
+        ArrayList<ShoppingListItem> result = null;
+        for (ShoppingListItem item : data.items)
+            for (Product product : category.products) {
+                if (product.name.contains(item.title)) {
+                    if (result == null) result = new ArrayList<>();
+                    result.add(item);
+                    break;
+                }
+            }
+        dataInCategory = result;
     }
 
     public void setData(@Nullable ShoppingList item) {
@@ -90,5 +108,20 @@ public class ControllerShoppingList {
     @Nullable
     public ArrayList<ShoppingListItem> getItems() {
         return data == null ? null : data.items;
+    }
+
+    public void clearCategory() {
+        dataInCategory = null;
+    }
+
+    public int getCountInCategory() {
+        return dataInCategory == null ? 0 : dataInCategory.size();
+    }
+
+    @Nullable
+    public String getTitleInCategory(int position) {
+        if (dataInCategory == null || position < 0 || position >= dataInCategory.size())
+            return null;
+        return dataInCategory.get(position).title;
     }
 }
