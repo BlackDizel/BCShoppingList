@@ -16,19 +16,22 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import org.byters.bcshoppinglist.controllers.utils.OnTapListener;
+
 import java.util.ArrayList;
 
 
 public class ImageViewer extends View {
     private GestureDetector gestureDetector;
     private ScaleGestureDetector scaleGestureDetector;
+    private ArrayList<OnTapListener> tapListeners;
     private float scaleFactor;
 
     private Paint paint;
     @Nullable
     private Bitmap image;
 
-    private Rect dst, dstOrig;
+    private Rect frameScaled, frameOriginal;
     private int imageWidth, imageHeight;
 
     public ImageViewer(Context context, @Nullable AttributeSet attrs) {
@@ -66,8 +69,8 @@ public class ImageViewer extends View {
 
         image = null;
 
-        dst = new Rect(0, 0, 0, 0);
-        dstOrig = new Rect(0, 0, 0, 0);
+        frameScaled = new Rect(0, 0, 0, 0);
+        frameOriginal = new Rect(0, 0, 0, 0);
 
         scaleFactor = 1;
     }
@@ -85,10 +88,10 @@ public class ImageViewer extends View {
 
     private void initRects() {
         if (imageWidth == 0 || imageHeight == 0
-                || dstOrig.bottom == 0 || dstOrig.right == 0) return;
-        int calcHeight = (int) (imageHeight / ((float) imageWidth / dstOrig.right));
-        dst.bottom = calcHeight;
-        dstOrig.bottom = calcHeight;
+                || frameOriginal.bottom == 0 || frameOriginal.right == 0) return;
+        int calcHeight = (int) (imageHeight / ((float) imageWidth / frameOriginal.right));
+        frameScaled.bottom = calcHeight;
+        frameOriginal.bottom = calcHeight;
     }
 
     public void addPolygon(ArrayList<Point> points) {
@@ -121,8 +124,8 @@ public class ImageViewer extends View {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        dst.set(0, 0, width, height);
-        dstOrig.set(0, 0, width, height);
+        frameScaled.set(0, 0, width, height);
+        frameOriginal.set(0, 0, width, height);
         scaleFactor = 1;
         initRects();
     }
@@ -130,7 +133,7 @@ public class ImageViewer extends View {
     @Override
     public void onDraw(Canvas canvas) {
         if (image == null) return;
-        canvas.drawBitmap(image, null, dst, paint);
+        canvas.drawBitmap(image, null, frameScaled, paint);
     }
 
     @Override
@@ -142,16 +145,40 @@ public class ImageViewer extends View {
         return true;
     }
 
+    public void addTapListener(OnTapListener listener) {
+        if (tapListeners == null) tapListeners = new ArrayList<>();
+        tapListeners.add(listener);
+    }
+
+    public void removeTapListener(OnTapListener listener) {
+        if (tapListeners == null) return;
+        tapListeners.remove(listener);
+    }
+
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener
             implements ScaleGestureDetector.OnScaleGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             int x = (int) distanceX;
             int y = (int) distanceY;
-            x = x < 0 ? Math.max(x, -getScrollX()) : Math.min(x, dst.right - (getScrollX() + dstOrig.right));
-            y = y < 0 ? Math.max(y, -getScrollY()) : Math.min(y, dst.bottom - (getScrollY() + dstOrig.bottom));
+            x = x < 0 ? Math.max(x, -getScrollX()) : Math.min(x, frameScaled.right - (getScrollX() + frameOriginal.right));
+            y = y < 0 ? Math.max(y, -getScrollY()) : Math.min(y, frameScaled.bottom - (getScrollY() + frameOriginal.bottom));
             scrollBy(x, y);
             return true;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+
+            float multiplier = imageHeight / (float) frameScaled.bottom;
+
+            int x_image = getScrollX() + (int) (e.getX() * multiplier);
+            int y_image = getScrollY() + (int) (e.getY() * multiplier);
+
+            if (tapListeners != null)
+                for (OnTapListener listener : tapListeners)
+                    listener.onTap(x_image, y_image);
+            return super.onSingleTapUp(e);
         }
 
         @Override
@@ -160,13 +187,13 @@ public class ImageViewer extends View {
             scaleFactor *= detector.getScaleFactor();
             scaleFactor = Math.max(scaleFactor, 1);
 
-            int right = (int) (dstOrig.right * scaleFactor);
-            int bottom = (int) (dstOrig.bottom * scaleFactor);
+            int right = (int) (frameOriginal.right * scaleFactor);
+            int bottom = (int) (frameOriginal.bottom * scaleFactor);
 
-            dst.left = (int) Math.max(dstOrig.left * scaleFactor, dstOrig.left);
-            dst.top = (int) Math.max(dstOrig.top * scaleFactor, dstOrig.top);
-            dst.right = dst.right == 0 ? right : Math.max(right, dstOrig.right);
-            dst.bottom = dst.bottom == 0 ? bottom : Math.max(bottom, dstOrig.bottom);
+            frameScaled.left = (int) Math.max(frameOriginal.left * scaleFactor, frameOriginal.left);
+            frameScaled.top = (int) Math.max(frameOriginal.top * scaleFactor, frameOriginal.top);
+            frameScaled.right = frameScaled.right == 0 ? right : Math.max(right, frameOriginal.right);
+            frameScaled.bottom = frameScaled.bottom == 0 ? bottom : Math.max(bottom, frameOriginal.bottom);
 
             //todo add scroll to fingers pos
             /*int newScrollX = (int) ((getScrollX() + detector.getFocusX()) * detector.getScaleFactor() - detector.getFocusX());
