@@ -85,9 +85,7 @@ public class FragmentMarketMap extends FragmentBase
         ImageViewer imageViewer = (ImageViewer) getView().findViewById(R.id.ivMap);
         imageViewer.loadImage(bitmap);
 
-        if (ControllerProductList.getInstance().isEmpty())
-            ControllerProductList.getInstance().updateData();
-        setImageData();
+        ControllerProductList.getInstance().updateData();
     }
 
     private void setImageData() {
