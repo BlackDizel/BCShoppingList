@@ -50,19 +50,6 @@ public class ControllerShoppingList {
         return data == null || data.items == null ? 0 : data.items.size();
     }
 
-    @Nullable
-    public String getTitle(int position) {
-        if (position < 0 || data == null || data.items == null || data.items.size() <= position)
-            return null;
-        return data.items.get(position).title;
-    }
-
-    public boolean isChecked(int position) {
-        if (position < 0 || data == null || data.items == null || data.items.size() <= position)
-            return false;
-        return !data.items.get(position).isNeedToPurchase;
-    }
-
     public void addItem(Context context, String title) {
         if (data == null || context == null || TextUtils.isEmpty(title)) return;
 
@@ -102,6 +89,10 @@ public class ControllerShoppingList {
     public void removeItem(Context context, ShoppingListItem item) {
         if (item == null || data == null || data.items == null) return;
         data.items.remove(item);
+
+        if (dataInCategory!=null)
+            dataInCategory.remove(item);
+
         ControllerList.getInstance().saveCache(context);
     }
 
@@ -119,9 +110,9 @@ public class ControllerShoppingList {
     }
 
     @Nullable
-    public String getTitleInCategory(int position) {
+    public ShoppingListItem getItemInCategory(int position) {
         if (dataInCategory == null || position < 0 || position >= dataInCategory.size())
             return null;
-        return dataInCategory.get(position).title;
+        return dataInCategory.get(position);
     }
 }

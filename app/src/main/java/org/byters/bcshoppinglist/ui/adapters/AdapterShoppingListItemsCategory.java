@@ -3,23 +3,44 @@ package org.byters.bcshoppinglist.ui.adapters;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerShoppingList;
+import org.byters.bcshoppinglist.ui.adapters.utils.AdapterUpdateListener;
+import org.byters.bcshoppinglist.ui.adapters.utils.ViewHolderShoppingList;
+
+import java.util.ArrayList;
 
 
-public class AdapterShoppingListItemsCategory extends RecyclerView.Adapter<AdapterShoppingListItemsCategory.ViewHolder> {
+public class AdapterShoppingListItemsCategory extends RecyclerView.Adapter<ViewHolderShoppingList> {
+
+    private ArrayList<AdapterUpdateListener> listeners;
+    public void addListener(AdapterUpdateListener listener){
+        if (listeners== null) listeners = new ArrayList<>();
+        listeners = new ArrayList<>();
+        listeners.add(listener);
+    }
+    public void removeListener(AdapterUpdateListener listener){
+        if (listeners==null) return;
+        listeners.remove(listener);
+    }
+
+    public void updateData(){
+        notifyDataSetChanged();
+        if (listeners==null) return;
+        for (AdapterUpdateListener listener: listeners)
+            listener.onAdapterUpdate();
+    }
+
+
     public AdapterShoppingListItemsCategory() {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(getId(), parent, false));
+    public ViewHolderShoppingList onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolderShoppingList(this, LayoutInflater.from(parent.getContext()).inflate(getId(), parent, false), ViewHolderShoppingList.TYPE_CATEGORY);
     }
 
     @LayoutRes
@@ -29,7 +50,7 @@ public class AdapterShoppingListItemsCategory extends RecyclerView.Adapter<Adapt
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolderShoppingList holder, int position) {
         holder.setData(position);
     }
 
@@ -39,18 +60,4 @@ public class AdapterShoppingListItemsCategory extends RecyclerView.Adapter<Adapt
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvTitle;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
-        }
-
-        public void setData(int position) {
-            String title = ControllerShoppingList.getInstance().getTitleInCategory(position);
-            tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
-        }
-
-    }
 }

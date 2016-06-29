@@ -23,6 +23,12 @@ public class FragmentPageShoppingList extends FragmentList {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_shopping_list, menu);
     }

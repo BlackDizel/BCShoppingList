@@ -27,6 +27,7 @@ import org.byters.bcshoppinglist.controllers.utils.OnTapListener;
 import org.byters.bcshoppinglist.model.StoreCategory;
 import org.byters.bcshoppinglist.ui.activity.ActivityMarketList;
 import org.byters.bcshoppinglist.ui.adapters.AdapterShoppingListItemsCategory;
+import org.byters.bcshoppinglist.ui.adapters.utils.AdapterUpdateListener;
 import org.byters.bcshoppinglist.ui.view.ImageViewer;
 
 import java.util.ArrayList;
@@ -35,7 +36,11 @@ public class FragmentMarketMap extends FragmentBase
         implements Target
         , OnProductListUpdateListener
         , OnTapListener
-        , DialogInterface.OnDismissListener {
+        , DialogInterface.OnDismissListener
+        , AdapterUpdateListener {
+
+    AdapterShoppingListItemsCategory adapter;
+    BottomSheetDialog dialog;
 
     public static Fragment newInstance(int type) {
         Fragment fragment = new FragmentMarketMap();
@@ -47,6 +52,7 @@ public class FragmentMarketMap extends FragmentBase
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        adapter = new AdapterShoppingListItemsCategory();
         return inflater.inflate(R.layout.fragment_market_map, container, false);
     }
 
@@ -56,6 +62,7 @@ public class FragmentMarketMap extends FragmentBase
         ImageViewer imageViewer = (ImageViewer) getView().findViewById(R.id.ivMap);
         imageViewer.addTapListener(this);
         ControllerProductList.getInstance().addListener(this);
+        adapter.addListener(this);
     }
 
     @Override
@@ -64,6 +71,7 @@ public class FragmentMarketMap extends FragmentBase
         ImageViewer imageViewer = (ImageViewer) getView().findViewById(R.id.ivMap);
         imageViewer.removeTapListener(this);
         ControllerProductList.getInstance().removeListener(this);
+        adapter.removeListener(this);
     }
 
     @Override
@@ -131,13 +139,14 @@ public class FragmentMarketMap extends FragmentBase
         if (ControllerShoppingList.getInstance().getCountInCategory() == 0)
             return;
 
-        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        dialog = new BottomSheetDialog(getContext());
         dialog.setContentView(R.layout.view_dialog_shopping_list_items);
 
         ((TextView) dialog.findViewById(R.id.tvTitle)).setText(category.name);
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.rvItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new AdapterShoppingListItemsCategory());
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
 
         dialog.setOnDismissListener(this);
         dialog.show();
@@ -146,5 +155,12 @@ public class FragmentMarketMap extends FragmentBase
     @Override
     public void onDismiss(DialogInterface dialog) {
         ControllerShoppingList.getInstance().clearCategory();
+    }
+
+    @Override
+    public void onAdapterUpdate() {
+        if (ControllerShoppingList.getInstance().getCountInCategory() == 0 && dialog != null && dialog.isShowing())
+            dialog.dismiss();
+
     }
 }
