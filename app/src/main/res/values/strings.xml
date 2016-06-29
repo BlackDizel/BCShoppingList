@@ -17,4 +17,7 @@
     <string name="activity_product_list_label">Поиск продуктов</string>
     <string name="activity_map_label">Карта магазина</string>
     <string name="show_in_market">Показать в магазине</string>
+    <string name="error_map_loading_out_of_memory">Ошибка загрузки карты</string>
+    <string name="ok">OK</string>
+    <string name="error_map_loading">Ошибка загрузки карты</string>
 </resources>

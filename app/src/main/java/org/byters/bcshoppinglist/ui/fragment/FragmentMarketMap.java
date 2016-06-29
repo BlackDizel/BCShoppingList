@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -107,7 +108,11 @@ public class FragmentMarketMap extends FragmentBase
 
     @Override
     public void onBitmapFailed(Drawable errorDrawable) {
-
+        if (getContext() != null && isAdded() && getActivity() != null)
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.error_map_loading)
+                    .setPositiveButton(R.string.ok, null)
+                    .show();
     }
 
     @Override
@@ -121,7 +126,9 @@ public class FragmentMarketMap extends FragmentBase
         if (TextUtils.isEmpty(uri))
             return;
 
-        Picasso.with(getContext()).load(uri).into(this);
+        Picasso.with(getContext())
+                .load(uri)
+                .into(this);
     }
 
     @Override

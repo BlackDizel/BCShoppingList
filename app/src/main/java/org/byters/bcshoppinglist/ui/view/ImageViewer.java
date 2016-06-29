@@ -10,12 +10,14 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.utils.OnTapListener;
 
 import java.util.ArrayList;
@@ -75,8 +77,19 @@ public class ImageViewer extends View {
         scaleFactor = 1;
     }
 
-    public void loadImage(Bitmap source) {
-        image = source.copy(source.getConfig(), true);
+    public void loadImage(@Nullable Bitmap source) {
+        if (source == null) return;
+
+        try {
+            image = source.copy(source.getConfig(), true);
+        } catch (OutOfMemoryError e) {
+            if (getContext() != null)
+                new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.error_map_loading_out_of_memory)
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+        }
+
         if (image == null) return;
 
         imageHeight = image.getHeight();
