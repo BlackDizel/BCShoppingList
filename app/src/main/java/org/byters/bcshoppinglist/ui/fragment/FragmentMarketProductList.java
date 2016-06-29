@@ -1,12 +1,14 @@
 package org.byters.bcshoppinglist.ui.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import org.byters.bcshoppinglist.R;
 import org.byters.bcshoppinglist.controllers.ControllerProductList;
@@ -45,8 +47,17 @@ public class FragmentMarketProductList extends FragmentList
 
     @Override
     public void onPause() {
+        hideKeyboard();
         super.onPause();
         ControllerProductList.getInstance().removeListener(this);
+    }
+
+    private void hideKeyboard() {
+        if (getActivity() == null) return;
+        View view = this.getActivity().getCurrentFocus();
+        if (view == null) return;
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -59,7 +70,9 @@ public class FragmentMarketProductList extends FragmentList
         inflater.inflate(R.menu.activity_market_product_list, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+
         ((SearchView) searchMenuItem.getActionView()).setOnQueryTextListener(this);
+        ((SearchView) searchMenuItem.getActionView()).setIconified(false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
