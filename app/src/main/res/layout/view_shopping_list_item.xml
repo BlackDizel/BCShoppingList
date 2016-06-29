@@ -7,6 +7,7 @@
     android:padding="@dimen/shopping_list_item_padding">
 
     <CheckBox
+        android:theme="@style/AppThemeBase"
         android:id="@+id/cbItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
